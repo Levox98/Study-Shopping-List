@@ -1,8 +1,8 @@
 package com.levox.studyshoppinglist.domain
 
-class GetShopItemUseCase {
+class GetShopItemUseCase(private val shopItemRepository: ShopItemRepository) {
 
     fun getShopItem(shopItemId: Int): ShopItem {
-        TODO()
+        return shopItemRepository.getShopItem(shopItemId)
     }
 }

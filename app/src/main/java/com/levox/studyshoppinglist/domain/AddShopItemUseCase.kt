@@ -1,8 +1,8 @@
 package com.levox.studyshoppinglist.domain
 
-class AddShopItemUseCase {
+class AddShopItemUseCase(private val shopItemRepository: ShopItemRepository) {
 
     fun addShopItem(shopItem: ShopItem) {
-        TODO()
+        shopItemRepository.addShopItem(shopItem)
     }
 }

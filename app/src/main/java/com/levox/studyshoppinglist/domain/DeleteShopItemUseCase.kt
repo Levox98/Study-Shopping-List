@@ -1,8 +1,8 @@
 package com.levox.studyshoppinglist.domain
 
-class DeleteShopItemUseCase {
+class DeleteShopItemUseCase(private val shopItemRepository: ShopItemRepository) {
 
     fun deleteShopItem(shopItem: ShopItem) {
-        TODO()
+        shopItemRepository.deleteShopItem(shopItem)
     }
 }
