@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">StudyShoppingList</string>
     <string name="add_item">Add new item to list</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="number_placeholder">0</string>
 </resources>
