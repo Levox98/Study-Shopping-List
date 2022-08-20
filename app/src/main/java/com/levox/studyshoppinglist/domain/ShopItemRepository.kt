@@ -1,5 +1,7 @@
 package com.levox.studyshoppinglist.domain
 
+import androidx.lifecycle.LiveData
+
 interface ShopItemRepository {
 
     fun addShopItem(shopItem: ShopItem)
@@ -10,5 +12,5 @@ interface ShopItemRepository {
 
     fun getShopItem(shopItemId: Int): ShopItem
 
-    fun getShopList(): List<ShopItem>
+    fun getShopList(): LiveData<List<ShopItem>>
 }
