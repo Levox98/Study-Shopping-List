@@ -9,7 +9,7 @@ import java.lang.RuntimeException
 object ShopItemRepositoryImpl : ShopItemRepository {
 
     private val shopListLD = MutableLiveData<List<ShopItem>>()
-    private val shopItemList = mutableListOf<ShopItem>()
+    private val shopItemList = sortedSetOf<ShopItem>({o1, o2 -> o1.id.compareTo(o2.id)})
 
     private var autoIncrementId = 0
 
