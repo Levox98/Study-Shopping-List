@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.levox.studyshoppinglist.R
 import com.levox.studyshoppinglist.domain.ShopItem
@@ -16,6 +17,9 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
             field = value
             notifyDataSetChanged()
         }
+
+    var onShopItemClick: ((ShopItem) -> Unit)? = null
+    var onShopItemLongClick: ((ShopItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         val layout = when (viewType) {
@@ -30,7 +34,11 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
         val shopItem = shopList[position]
+        holder.view.setOnClickListener {
+            onShopItemClick?.invoke(shopItem)
+        }
         holder.view.setOnLongClickListener {
+            onShopItemLongClick?.invoke(shopItem)
             true
         }
         holder.tvName.text = shopItem.name
