@@ -1,14 +1,12 @@
 package com.levox.studyshoppinglist.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.levox.studyshoppinglist.R
-import com.levox.studyshoppinglist.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,6 +22,12 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopList.observe(this) {
             shopListAdapter.submitList(it)
         }
+
+        val buttonAdd: Button = findViewById(R.id.btn_add_item)
+        buttonAdd.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -33,13 +37,15 @@ class MainActivity : AppCompatActivity() {
             adapter = shopListAdapter
             recycledViewPool.setMaxRecycledViews(
                 ShopListAdapter.VIEW_TYPE_DISABLED,
-                ShopListAdapter.MAX_POOL_SIZE)
+                ShopListAdapter.MAX_POOL_SIZE
+            )
             recycledViewPool.setMaxRecycledViews(
                 ShopListAdapter.VIEW_TYPE_ENABLED,
                 ShopListAdapter.MAX_POOL_SIZE
             )
         }
-        setupClickListeners()
+        setupClickListener()
+        setupLongClickListener()
         setupSwipeListener(recyclerView)
     }
 
@@ -65,16 +71,16 @@ class MainActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    private fun setupClickListeners() {
+    private fun setupLongClickListener() {
         shopListAdapter.onShopItemLongClick = {
             viewModel.changeEnabledState(it)
         }
+    }
+
+    private fun setupClickListener() {
         shopListAdapter.onShopItemClick = {
-            Toast.makeText(
-                this@MainActivity,
-                "Name: ${it.name}, count: ${it.count}",
-                Toast.LENGTH_SHORT
-            ).show()
+            val intent = ShopItemActivity.newIntentEditItem(this, it.id)
+            startActivity(intent)
         }
     }
 }
