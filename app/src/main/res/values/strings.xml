@@ -3,4 +3,7 @@
     <string name="add_item">Add new item to list</string>
     <string name="placeholder">Placeholder</string>
     <string name="number_placeholder">0</string>
+    <string name="name">Name:</string>
+    <string name="count">Count:</string>
+    <string name="save">Save</string>
 </resources>
