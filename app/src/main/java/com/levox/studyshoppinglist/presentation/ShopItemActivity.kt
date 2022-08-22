@@ -15,14 +15,6 @@ import com.levox.studyshoppinglist.domain.ShopItem
 
 class ShopItemActivity : AppCompatActivity() {
 
-//    private lateinit var viewModel: ShopItemViewModel
-//
-//    private lateinit var tilName: TextInputLayout
-//    private lateinit var tilCount: TextInputLayout
-//    private lateinit var etName: TextInputEditText
-//    private lateinit var etCount: TextInputEditText
-//    private lateinit var btnSave: Button
-
     private var screenMode = MODE_UNKNOWN
     private var shopItemId = ShopItem.UNDEFINED_ID
 
@@ -30,37 +22,11 @@ class ShopItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()
-//        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
-//        initializeViews()
-//        addTextChangeListeners()
-        launchCorrectMode()
-//        observeViewModel()
+        if (savedInstanceState == null) {
+            launchCorrectMode()
+        }
     }
-//
-//    private fun observeViewModel() {
-//        viewModel.errorInputName.observe(this) {
-//            val message = if (it) {
-//                "Invalid name"
-//            } else {
-//                null
-//            }
-//            tilName.error = message
-//        }
-//
-//        viewModel.errorInputCount.observe(this) {
-//            val message = if (it) {
-//                "Invalid count"
-//            } else {
-//                null
-//            }
-//            tilCount.error = message
-//        }
-//
-//        viewModel.actionIsFinished.observe(this) {
-//            finish()
-//        }
-//    }
-//
+
     private fun launchCorrectMode() {
         val fragment = when (screenMode) {
             EXTRA_MODE_ADD -> ShopItemFragment.newInstanceAddItem()
@@ -68,57 +34,10 @@ class ShopItemActivity : AppCompatActivity() {
             else -> throw RuntimeException("Unknown mode: $screenMode")
         }
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_fragment_container, fragment)
+            .replace(R.id.shop_item_fragment_container, fragment)
             .commit()
     }
-//
-//    private fun launchEditMode() {
-//        viewModel.getShopItem(shopItemId)
-//        viewModel.shopItem.observe(this) {
-//            etName.setText(it.name)
-//            etCount.setText(it.count.toString())
-//        }
-//
-//        btnSave.setOnClickListener {
-//            viewModel.editShopItem(etName.text.toString(), etCount.text.toString())
-//        }
-//    }
-//
-//    private fun launchAddMode() {
-//
-//        btnSave.setOnClickListener {
-//            viewModel.addShopItem(etName.text.toString(), etCount.text.toString())
-//        }
-//    }
-//
-//    private fun addTextChangeListeners() {
-//        etName.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                viewModel.resetErrorInputName()
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//            }
-//
-//        })
-//
-//        etCount.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                viewModel.resetErrorInputCount()
-//            }
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//            }
-//
-//        })
-//    }
-//
+
     private fun parseIntent() {
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
             throw RuntimeException("No screen mode passed")
@@ -135,14 +54,6 @@ class ShopItemActivity : AppCompatActivity() {
             shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
         }
     }
-//
-//    private fun initializeViews() {
-//        tilName = findViewById(R.id.til_name)
-//        tilCount = findViewById(R.id.til_count)
-//        etName = findViewById(R.id.et_name)
-//        etCount = findViewById(R.id.et_count)
-//        btnSave = findViewById(R.id.btn_save)
-//    }
 
     companion object {
         private const val EXTRA_SCREEN_MODE = "extra_mode"

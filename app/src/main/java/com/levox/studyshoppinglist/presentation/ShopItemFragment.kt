@@ -49,7 +49,6 @@ class ShopItemFragment : Fragment() {
         addTextChangeListeners()
         launchCorrectMode()
         observeViewModel()
-
     }
 
 
