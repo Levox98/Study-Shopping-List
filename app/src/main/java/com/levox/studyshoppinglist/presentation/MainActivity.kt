@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.levox.studyshoppinglist.R
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             shopListAdapter.submitList(it)
         }
 
-        val buttonAdd: Button = findViewById(R.id.btn_add_item)
+        val buttonAdd: FloatingActionButton = findViewById(R.id.btn_add_item)
         buttonAdd.setOnClickListener {
             val intent = ShopItemActivity.newIntentAddItem(this)
             startActivity(intent)
