@@ -1,6 +1,7 @@
 package com.levox.studyshoppinglist.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider

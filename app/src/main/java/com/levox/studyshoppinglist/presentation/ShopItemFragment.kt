@@ -154,6 +154,14 @@ class ShopItemFragment(
 
         private const val MODE_UNKNOWN = ""
 
+        fun newInstanceAddItem(): Fragment {
+            return ShopItemFragment(EXTRA_MODE_ADD)
+        }
+
+        fun newInstanceEditItem(shopItemId: Int): Fragment {
+            return ShopItemFragment(EXTRA_MODE_EDIT, shopItemId)
+        }
+
         fun newIntentAddItem(context: Context): Intent {
             return Intent(context, ShopItemActivity::class.java)
                 .putExtra(EXTRA_SCREEN_MODE, EXTRA_MODE_ADD)

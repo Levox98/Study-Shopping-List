@@ -1,5 +1,6 @@
 package com.levox.studyshoppinglist.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView

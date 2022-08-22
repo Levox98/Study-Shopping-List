@@ -23,17 +23,17 @@ class ShopItemActivity : AppCompatActivity() {
 //    private lateinit var etCount: TextInputEditText
 //    private lateinit var btnSave: Button
 
-//    private var screenMode = MODE_UNKNOWN
-//    private var shopItemId = ShopItem.UNDEFINED_ID
+    private var screenMode = MODE_UNKNOWN
+    private var shopItemId = ShopItem.UNDEFINED_ID
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
-//        parseIntent()
+        parseIntent()
 //        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
 //        initializeViews()
 //        addTextChangeListeners()
-//        launchCorrectMode()
+        launchCorrectMode()
 //        observeViewModel()
     }
 //
@@ -61,12 +61,16 @@ class ShopItemActivity : AppCompatActivity() {
 //        }
 //    }
 //
-//    private fun launchCorrectMode() {
-//        when (screenMode) {
-//            EXTRA_MODE_ADD -> launchAddMode()
-//            EXTRA_MODE_EDIT -> launchEditMode()
-//        }
-//    }
+    private fun launchCorrectMode() {
+        val fragment = when (screenMode) {
+            EXTRA_MODE_ADD -> ShopItemFragment.newInstanceAddItem()
+            EXTRA_MODE_EDIT -> ShopItemFragment.newInstanceEditItem(shopItemId)
+            else -> throw RuntimeException("Unknown mode: $screenMode")
+        }
+        supportFragmentManager.beginTransaction()
+            .add(R.id.shop_item_fragment_container, fragment)
+            .commit()
+    }
 //
 //    private fun launchEditMode() {
 //        viewModel.getShopItem(shopItemId)
@@ -115,22 +119,22 @@ class ShopItemActivity : AppCompatActivity() {
 //        })
 //    }
 //
-//    private fun parseIntent() {
-//        if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
-//            throw RuntimeException("No screen mode passed")
-//        }
-//        val mode = intent.getStringExtra(EXTRA_SCREEN_MODE)
-//        if (mode != EXTRA_MODE_EDIT && mode != EXTRA_MODE_ADD) {
-//            throw RuntimeException("Unknown mode: $mode")
-//        }
-//        screenMode = mode
-//        if (screenMode == EXTRA_MODE_EDIT) {
-//            if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
-//                throw RuntimeException("No ID provided")
-//            }
-//            shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
-//        }
-//    }
+    private fun parseIntent() {
+        if (!intent.hasExtra(EXTRA_SCREEN_MODE)) {
+            throw RuntimeException("No screen mode passed")
+        }
+        val mode = intent.getStringExtra(EXTRA_SCREEN_MODE)
+        if (mode != EXTRA_MODE_EDIT && mode != EXTRA_MODE_ADD) {
+            throw RuntimeException("Unknown mode: $mode")
+        }
+        screenMode = mode
+        if (screenMode == EXTRA_MODE_EDIT) {
+            if (!intent.hasExtra(EXTRA_SHOP_ITEM_ID)) {
+                throw RuntimeException("No ID provided")
+            }
+            shopItemId = intent.getIntExtra(EXTRA_SHOP_ITEM_ID, ShopItem.UNDEFINED_ID)
+        }
+    }
 //
 //    private fun initializeViews() {
 //        tilName = findViewById(R.id.til_name)
@@ -139,25 +143,25 @@ class ShopItemActivity : AppCompatActivity() {
 //        etCount = findViewById(R.id.et_count)
 //        btnSave = findViewById(R.id.btn_save)
 //    }
-//
-//    companion object {
-//        private const val EXTRA_SCREEN_MODE = "extra_mode"
-//        private const val EXTRA_SHOP_ITEM_ID = "extra_shop_item_id"
-//        private const val EXTRA_MODE_ADD = "mode_add"
-//        private const val EXTRA_MODE_EDIT = "mode_edit"
-//
-//        private const val MODE_UNKNOWN = ""
-//
-//        fun newIntentAddItem(context: Context): Intent {
-//            return Intent(context, ShopItemActivity::class.java)
-//                .putExtra(EXTRA_SCREEN_MODE, EXTRA_MODE_ADD)
-//        }
-//
-//        fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
-//            val intent = Intent(context, ShopItemActivity::class.java)
-//            intent.putExtra(EXTRA_SCREEN_MODE, EXTRA_MODE_EDIT)
-//            intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
-//            return intent
-//        }
-//    }
+
+    companion object {
+        private const val EXTRA_SCREEN_MODE = "extra_mode"
+        private const val EXTRA_SHOP_ITEM_ID = "extra_shop_item_id"
+        private const val EXTRA_MODE_ADD = "mode_add"
+        private const val EXTRA_MODE_EDIT = "mode_edit"
+
+        private const val MODE_UNKNOWN = ""
+
+        fun newIntentAddItem(context: Context): Intent {
+            return Intent(context, ShopItemActivity::class.java)
+                .putExtra(EXTRA_SCREEN_MODE, EXTRA_MODE_ADD)
+        }
+
+        fun newIntentEditItem(context: Context, shopItemId: Int): Intent {
+            val intent = Intent(context, ShopItemActivity::class.java)
+            intent.putExtra(EXTRA_SCREEN_MODE, EXTRA_MODE_EDIT)
+            intent.putExtra(EXTRA_SHOP_ITEM_ID, shopItemId)
+            return intent
+        }
+    }
 }
