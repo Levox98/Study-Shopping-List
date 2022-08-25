@@ -1,14 +1,14 @@
 package com.levox.studyshoppinglist.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.ListAdapter
 import com.levox.studyshoppinglist.R
+import com.levox.studyshoppinglist.databinding.ShopItemDisabledBinding
+import com.levox.studyshoppinglist.databinding.ShopItemEnabledBinding
 import com.levox.studyshoppinglist.domain.ShopItem
-import java.lang.RuntimeException
 
 class ShopListAdapter
     : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
@@ -23,21 +23,34 @@ class ShopListAdapter
             else -> throw RuntimeException("Unknown view type: $viewType")
         }
 
-        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
+        val view = DataBindingUtil.inflate<ViewDataBinding>(
+            LayoutInflater.from(parent.context),
+            layout,
+            parent,
+            false)
         return ShopItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
         val shopItem = getItem(position)
-        holder.view.setOnClickListener {
+        val binding = holder.binding
+        binding.root.setOnClickListener {
             onShopItemClick?.invoke(shopItem)
         }
-        holder.view.setOnLongClickListener {
+        binding.root.setOnLongClickListener {
             onShopItemLongClick?.invoke(shopItem)
             true
         }
-        holder.tvName.text = shopItem.name
-        holder.tvCount.text = shopItem.count.toString()
+        when (binding) {
+            is ShopItemEnabledBinding -> {
+                binding.tvName.text = shopItem.name
+                binding.tvCount.text = shopItem.count.toString()
+            }
+            is ShopItemDisabledBinding -> {
+                binding.tvName.text = shopItem.name
+                binding.tvCount.text = shopItem.count.toString()
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
