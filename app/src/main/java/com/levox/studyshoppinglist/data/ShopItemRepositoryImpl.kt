@@ -2,12 +2,9 @@ package com.levox.studyshoppinglist.data
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.levox.studyshoppinglist.domain.ShopItem
 import com.levox.studyshoppinglist.domain.ShopItemRepository
-import java.lang.RuntimeException
-import kotlin.random.Random
 
 class ShopItemRepositoryImpl(
     private val application: Application
@@ -16,19 +13,19 @@ class ShopItemRepositoryImpl(
     private val shopItemDao = AppDatabase.getInstance(application).shopListDao()
     private val mapper = ShopListMapper()
 
-    override fun addShopItem(shopItem: ShopItem) {
+    override suspend fun addShopItem(shopItem: ShopItem) {
         shopItemDao.addShopItem(mapper.mapEntityToDbModel(shopItem))
     }
 
-    override fun deleteShopItem(shopItem: ShopItem) {
+    override suspend fun deleteShopItem(shopItem: ShopItem) {
         shopItemDao.deleteShopItem(shopItem.id)
     }
 
-    override fun editShopItem(shopItem: ShopItem) {
+    override suspend fun editShopItem(shopItem: ShopItem) {
         shopItemDao.addShopItem(mapper.mapEntityToDbModel(shopItem))
     }
 
-    override fun getShopItem(shopItemId: Int): ShopItem {
+    override suspend fun getShopItem(shopItemId: Int): ShopItem {
         val dbModel = shopItemDao.getShopItem(shopItemId)
         return mapper.mapDbModelToEntity(dbModel)
     }
