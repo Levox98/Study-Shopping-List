@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.levox.studyshoppinglist.data.ShopItemRepositoryImpl
 import com.levox.studyshoppinglist.domain.AddShopItemUseCase
 import com.levox.studyshoppinglist.domain.EditShopItemUseCase
@@ -24,8 +25,6 @@ class ShopItemViewModel(
     private val addShopItemUseCase = AddShopItemUseCase(repository)
     private val editShopItemUseCase = EditShopItemUseCase(repository)
 
-    private val scope = CoroutineScope(Dispatchers.IO)
-
     private val _errorInputName = MutableLiveData<Boolean>()
     val errorInputName: LiveData<Boolean>
         get() = _errorInputName
@@ -43,7 +42,7 @@ class ShopItemViewModel(
         get() = _actionIsFinished
 
     fun getShopItem(shopItemId: Int) {
-        scope.launch {
+        viewModelScope.launch {
             val item = getShopItemUseCase.getShopItem(shopItemId)
             _shopItem.postValue(item)
         }
@@ -54,7 +53,7 @@ class ShopItemViewModel(
         val count = parseCount(inputCount)
         val inputValidated = isInputValid(name, count)
         if (inputValidated) {
-            scope.launch {
+            viewModelScope.launch {
                 val shopItem = ShopItem(name, count, true)
                 addShopItemUseCase.addShopItem(shopItem)
                 finishWork()
@@ -68,7 +67,7 @@ class ShopItemViewModel(
         val inputValidated = isInputValid(name, count)
         if (inputValidated) {
             _shopItem.value?.let {
-                scope.launch {
+                viewModelScope.launch {
                     val item = it.copy(name = name, count = count)
                     editShopItemUseCase.editShopItem(item)
                     finishWork()
@@ -112,10 +111,5 @@ class ShopItemViewModel(
 
     private fun finishWork() {
         _actionIsFinished.postValue(Unit)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
     }
 }
